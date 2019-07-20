@@ -1,0 +1,9 @@
+server:
+  port: 80
+
+# redis config
+spring:
+  redis:
+    host: 118.24.127.192
+    port: 6379
+    database: 0
