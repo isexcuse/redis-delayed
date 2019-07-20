@@ -27,14 +27,14 @@ public class RedisDelayedController {
 
     @GetMapping("/delayed")
     public ApiResponse startExecute(String body, long time) {
-        redisDelayedService.delayedCache(RedisCacheActuator.execute(new ActivityRedisKeyEntity(), body, time));
+        redisDelayedService.delayedCache(RedisCacheActuator.execute(redisKeyEntity(), body, time));
         return ApiResponse.buildResponse(HttpStatus.SC_OK, "success");
     }
 
 
     @DeleteMapping("/delete")
     public ApiResponse deleteCache() {
-        redisDelayedService.deleteCache(RedisCacheActuator.delete(new ActivityRedisKeyEntity()));
+        redisDelayedService.deleteCache(RedisCacheActuator.delete(redisKeyEntity()));
         return ApiResponse.buildResponse(HttpStatus.SC_OK, "success");
     }
 
