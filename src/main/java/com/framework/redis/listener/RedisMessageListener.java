@@ -2,6 +2,8 @@ package com.framework.redis.listener;
 
 import com.alibaba.fastjson.JSONObject;
 import com.framework.redis.domain.ActivityRedisKeyEntity;
+import com.framework.redis.service.RedisDelayedServiceImpl;
+import com.google.common.base.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,9 +27,13 @@ public class RedisMessageListener implements MessageListener {
 
     @Override
     public void onMessage(Message message, byte[] bytes) {
-        logger.info("Redis Key 过期时间：" + LocalDateTime.now().toString());
         String messageBody = (String) redisTemplate.getValueSerializer().deserialize(message.getBody());
-        ActivityRedisKeyEntity keyEntity = JSONObject.parseObject(messageBody, ActivityRedisKeyEntity.class);
+        if (Strings.isNullOrEmpty(messageBody)) return;
+        if (!messageBody.startsWith(RedisDelayedServiceImpl.HANDLER_REDIS_KEY_HEAD)) return;
+        logger.info("Redis Key 过期时间：" + LocalDateTime.now().toString());
+        logger.info("Redis Message：" + message.toString());
+        String messageJson = messageBody.substring(messageBody.indexOf("{"));
+        ActivityRedisKeyEntity keyEntity = JSONObject.parseObject(messageJson, ActivityRedisKeyEntity.class);
         logger.info("Redis Message Body：" + keyEntity);
     }
 }

@@ -20,12 +20,14 @@ public class RedisDelayedServiceImpl implements RedisDelayedService {
     @Autowired
     private StringRedisTemplate redisTemplate;
 
+    public static final String HANDLER_REDIS_KEY_HEAD = "HANDLER_REDIS_KEY_HEAD:";
+
     private static Logger logger = LoggerFactory.getLogger(RedisDelayedServiceImpl.class);
 
     @Override
     public void saveCache(RedisCacheActuator<ActivityRedisKeyEntity> actuator) {
         logger.info("通用缓存传输对象：" + actuator.toString());
-        redisTemplate.opsForValue().set(JSONObject.toJSONString(actuator.getCacheKey()), actuator.getCacheBody());
+        redisTemplate.opsForValue().set(HANDLER_REDIS_KEY_HEAD + JSONObject.toJSONString(actuator.getCacheKey()), actuator.getCacheBody());
     }
 
     @Override
@@ -37,11 +39,11 @@ public class RedisDelayedServiceImpl implements RedisDelayedService {
             return;
         }
         String cacheKey = JSONObject.toJSONString(actuator.getCacheKey());
-        redisTemplate.opsForValue().set(cacheKey, actuator.getCacheBody(), expiration, actuator.getTimeUnit());
+        redisTemplate.opsForValue().set(HANDLER_REDIS_KEY_HEAD + cacheKey, actuator.getCacheBody(), expiration, actuator.getTimeUnit());
     }
 
     @Override
     public void deleteCache(RedisCacheActuator<ActivityRedisKeyEntity> actuator) {
-        redisTemplate.delete(JSONObject.toJSONString(actuator.getCacheKey()));
+        redisTemplate.delete(HANDLER_REDIS_KEY_HEAD + JSONObject.toJSONString(actuator.getCacheKey()));
     }
 }
