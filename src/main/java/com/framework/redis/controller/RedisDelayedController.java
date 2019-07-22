@@ -41,9 +41,9 @@ public class RedisDelayedController {
     private ActivityRedisKeyEntity redisKeyEntity() {
         ActivityRedisKeyEntity keyEntity = new ActivityRedisKeyEntity();
         keyEntity.setActivityId(123456L);
-        keyEntity.setCurrentState(1);
-        keyEntity.setActivityStartTime("2019-07-20 17:05");
-        keyEntity.setActivityEndTime("2019-07-20 17:15");
+        keyEntity.setCurrentState(2);
+        keyEntity.setActivityStartTime("2019-07-22 10:00");
+        keyEntity.setActivityEndTime("2019-07-20 10:30");
         return keyEntity;
     }
 

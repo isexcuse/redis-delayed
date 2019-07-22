@@ -111,4 +111,14 @@ public class RedisCacheActuator<T> implements Serializable {
     public void setTimeUnit(TimeUnit timeUnit) {
         this.timeUnit = timeUnit;
     }
+
+    @Override
+    public String toString() {
+        return "RedisCacheActuator{" +
+                "cacheKey=" + cacheKey +
+                ", cacheBody='" + cacheBody + '\'' +
+                ", expiration=" + expiration +
+                ", timeUnit=" + timeUnit +
+                '}';
+    }
 }
